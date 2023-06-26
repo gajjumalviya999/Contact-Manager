@@ -1,0 +1,14 @@
+const express = require("express");
+const dotenv = require("dotenv").config();
+const router = require("./router.js");
+const errorHandler = require("./middleware.js");
+const connectDB = require("./config/dbConnection.js");
+const validateToken = require("./middlewares/validateToken.js");
+const app = express();
+const PORT = process.env.PORT;
+connectDB();
+app.use(express.json());
+app.use("/api/contacts",validateToken, router);
+app.use("/users", require("./routerUsers.js"));
+app.use(errorHandler);
+app.listen(PORT, () => console.log(`listening on port ${PORT}`));
